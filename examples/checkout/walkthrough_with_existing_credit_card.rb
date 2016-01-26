@@ -19,7 +19,7 @@ module Examples
         if response.status == 201
           client.succeeded "Created new checkout."
           order = JSON.parse(response.body)
-          if order['email'] == 'spree@example.com'
+          if order['email'] == 'admin@example.com'
             # Email addresses are necessary for orders to transition to address.
             # This just makes really sure that the email is already set.
             # You will not have to do this in your own API unless you've customized it.
@@ -202,7 +202,7 @@ module Examples
         if response.status == 201
           client.succeeded "Created new checkout."
           order = JSON.parse(response.body)
-          if order['email'] == 'spree@example.com'
+          if order['email'] == 'admin@example.com'
             # Email addresses are necessary for orders to transition to address.
             # This just makes really sure that the email is already set.
             # You will not have to do this in your own API unless you've customized it.
