@@ -19,7 +19,6 @@ module Examples
         if response.status == 201
           client.succeeded "Created new checkout."
           order = JSON.parse(response.body)
-          binding.pry
           if order['email'] == 'admin@example.com'
             # Email addresses are necessary for orders to transition to address.
             # This just makes really sure that the email is already set.
