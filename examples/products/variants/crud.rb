@@ -9,7 +9,7 @@ module Examples
           ov_id = nil
 
           # create a new product
-          response = client.post("/api/v1/products",
+          response = client.post("/api/products",
             {
               product: {
                 name: 'Brians Product',
@@ -29,7 +29,7 @@ module Examples
           end
 
           # create option type
-          response = client.post("/api/v1/option_types",
+          response = client.post("/api/option_types",
             {
               option_type: {
                 name: 'level',
@@ -49,7 +49,7 @@ module Examples
 
           %w{one two}.each do |level|
             # create option type
-            response = client.post("/api/v1/option_types/#{ot_id}/option_values",
+            response = client.post("/api/option_types/#{ot_id}/option_values",
               {
                 option_value: {
                   name: level,
@@ -69,7 +69,7 @@ module Examples
           end
 
           # Update product with option types
-          response = client.put("/api/v1/products/#{id}",
+          response = client.put("/api/products/#{id}",
             {
               product: {
                 option_types: [ot_id]
@@ -87,7 +87,7 @@ module Examples
           end
 
           # Create variant
-          response = client.post("/api/v1/products/#{id}/variants",
+          response = client.post("/api/products/#{id}/variants",
             {
               variant: {
                 option_value_ids: [ov_id]
