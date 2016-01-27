@@ -12,7 +12,7 @@ module Examples
         # Create the order step by step:
         # You may also choose to start it off with some line items
         # See checkout/creating_with_line_items.rb
-        response = client.post('/api/v1/orders')
+        response = client.post('/api/orders')
 
         if response.status == 201
           client.succeeded "Created new checkout."
@@ -34,7 +34,7 @@ module Examples
 
         # Assign a line item to the order we just created.
 
-        response = client.post("/api/v1/orders/#{order['number']}/line_items",
+        response = client.post("/api/orders/#{order['number']}/line_items",
           {
             line_item: {
               variant_id: 1,
@@ -51,7 +51,7 @@ module Examples
         end
 
         # Transition the order to the 'address' state
-        response = client.put("/api/v1/checkouts/#{order['number']}/next")
+        response = client.put("/api/checkouts/#{order['number']}/next")
         if response.status == 200
           order = JSON.parse(response.body)
           client.succeeded "Transitioned order into address state."
@@ -66,7 +66,7 @@ module Examples
         # This will give you the correct country_id and state_id params to use for address information.
 
         # First, get the country:
-        response = client.get('/api/v1/countries?q[name_cont]=United States')
+        response = client.get('/api/countries?q[name_cont]=United States')
         if response.status == 200
           client.succeeded "Retrieved a list of countries."
           countries = JSON.parse(response.body)['countries']
@@ -80,7 +80,7 @@ module Examples
 
         # Then, get the state we want from the states of that country:
 
-        response = client.get("/api/v1/countries/#{usa['id']}/states?q[name_cont]=Maryland")
+        response = client.get("/api/countries/#{usa['id']}/states?q[name_cont]=Maryland")
         if response.status == 200
           client.succeeded "Retrieved a list of states."
           states = JSON.parse(response.body)['states']
@@ -106,7 +106,7 @@ module Examples
           phone: '(555) 555-5555'
         }
 
-        response = client.put("/api/v1/checkouts/#{order['number']}",
+        response = client.put("/api/checkouts/#{order['number']}",
           {
             order: {
               bill_address_attributes: address,
@@ -130,7 +130,7 @@ module Examples
         # Next step: delivery!
 
         first_shipment = order['shipments'].first
-        response = client.put("/api/v1/checkouts/#{order['number']}",
+        response = client.put("/api/checkouts/#{order['number']}",
           {
             order: {
               shipments_attributes: [
@@ -158,7 +158,7 @@ module Examples
         # First up: a credit card payment
         credit_card_payment_method = order['payment_methods'].detect { |pm| pm['name'] == "Credit Card" }
 
-        response = client.put("/api/v1/checkouts/#{order['number']}",
+        response = client.put("/api/checkouts/#{order['number']}",
         {
           order: {
             payments_attributes: [{
@@ -192,7 +192,7 @@ module Examples
         end
 
         # Test for #4927
-        response = client.put("/api/v1/checkouts/#{order['number']}",
+        response = client.put("/api/checkouts/#{order['number']}",
         {
           order: {
             payments_attributes: [{
@@ -239,7 +239,7 @@ module Examples
         # This is the final point where the user gets to view their order's final information.
         # All that's required at this point is that we complete the order, which is as easy as:
 
-        response = client.put("/api/v1/checkouts/#{order['number']}/next")
+        response = client.put("/api/checkouts/#{order['number']}/next")
         if response.status == 200
           order = JSON.parse(response.body)
           if order['state'] == 'complete'
