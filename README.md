@@ -6,6 +6,28 @@ All examples use the Faraday and httpclient gems, as these provide (imo) the bes
 
 There are not that many examples at the moment. This will change, over time. You can help it change by submitting pull requests to this repo.
 
+## Run against solidus core.
+
+    git clone git@github.com:solidusio/solidus.git
+    cd solidus
+    bundle
+    bundle exec rake sandbox
+    cd sandbox
+    bundle exec rails console
+    Spree::User.first.update_column(:spree_api_key, 'fake')
+
+For the guest checkout api sample, open sandbox/config/initializers/spree.rb and
+set the `requires_authentication` config option for the Api to false.
+
+```ruby
+Spree::Api::Config.configure do |config|
+  config.use_static_preferences!
+
+  config.requires_authentication = false
+end
+```
+
+
 ## Do these examples work?
 
 Sure they do!
